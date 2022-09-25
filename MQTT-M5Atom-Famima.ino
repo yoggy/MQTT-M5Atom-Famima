@@ -34,10 +34,11 @@ void setup() {
   // Wifi
   WiFi.mode(WIFI_MODE_STA);
   WiFi.begin(wifi_ssid, wifi_password);
+  WiFi.setSleep(false);
   int count = 0;
   while (WiFi.status() != WL_CONNECTED) {
-    delay(200);
-    switch (count) {
+    delay(250);
+    switch (count % 4) {
       case 0:
         Serial.println("|");
         M5.dis.drawpix(0, 0xffff00);  // yellow
@@ -53,9 +54,9 @@ void setup() {
         Serial.println("\\");
         break;
     }
-    count = (count + 1) % 4;
+    count ++;
+    if (count >= 240) reboot(); // 240 / 4 = 60sec
   }
-  WiFi.setSleep(false);
   Serial.println("WiFi connected!");
   delay(1000);
 
